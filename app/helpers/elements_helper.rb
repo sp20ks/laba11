@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
+# helper
 module ElementsHelper
-
   def set_values
     @length = params[:length].to_i
     @str = params[:str_elem]
-  end
-
-  def check_data
-    if /[^\d^\s]/.match(@str) then redirect_to adding_path, notice: "Sequence isn't correct"
-    else
-      @arr = @str.split.map!(&:to_i)
-      redirect_to adding_path, notice: "Length isn't correct" if @arr.length != @length
+    segments_of_powers
+    largest_segment
+    @element = Element.new do |elem|
+      elem.arr = @str
+      elem.length = @length
+      elem.res_arr = @seg_arr
+      elem.max_subarr = @max_subarr
     end
   end
 
@@ -23,7 +23,7 @@ module ElementsHelper
       end
     end
   end
-  
+
   def power_of_5?(num)
     tmp = 0
     return false if num.zero?
@@ -41,7 +41,7 @@ module ElementsHelper
   def segments_of_powers
     @seg_arr = []
     buf = []
-    @arr.each do |elem|
+    @str.split.map!(&:to_i).each do |elem|
       if power_of_5?(elem) then buf << elem
       elsif !buf.length.zero?
         @seg_arr << buf
