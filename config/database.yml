@@ -83,4 +83,4 @@ production:
   <<: *default
   database: laba11_2_production
   username: ksusha
-  password: 
+  password:

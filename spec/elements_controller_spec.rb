@@ -113,7 +113,7 @@ RSpec.describe 'Selenium test of page' do
 
     driver.manage.timeouts.implicit_wait = 500
     flash = driver.find_element(id: 'flash').text
-    expect(flash).to eq("Sequence isn't correct")
+    expect(flash).to eq("Arr isn't correct and Length isn't correct")
     driver.quit
   end
 
@@ -126,8 +126,8 @@ RSpec.describe 'Selenium test of page' do
     sequence_field = driver.find_element(id: 'str')
     btn = driver.find_element(id: 'btn')
 
-    num_field.send_keys(10)
-    sequence_field.send_keys('1 2 3 4 5 6 7')
+    num_field.send_keys(19)
+    sequence_field.send_keys('1 2 3 4 5 6 6 6 6 6')
     btn.click
 
     driver.manage.timeouts.implicit_wait = 500

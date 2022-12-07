@@ -18,7 +18,7 @@ class ElementsController < ApplicationController
   end
 
   def result
-    unless Element.find_by(arr: @element.arr).nil?
+    unless Element.find_by(arr: @str).nil?
       redirect_to '/elements/index', notice: 'There is record with same sequence'
       return
     end

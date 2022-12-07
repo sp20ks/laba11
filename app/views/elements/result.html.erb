@@ -13,24 +13,16 @@
         <td><%=@element.arr%></td>
       </tr>
       <tr>
-      <%if !@seg_arr.length.zero?%> 
+      <%if !@element.res_arr.length.zero?%> 
         <td>Sequences of powers of 5</td>
-        <td><%@seg_arr.each do |elem|%>
-              <p><%=elem%></p>
-            <%end%>
-        </td>
+        <td><%=@element.res_arr%></td>
       </tr>
       <tr>
         <td>Sequence of powers of 5 with max length</td>
-        <td><%=@max_subarr%></td>
+        <td><%=@element.max_subarr%></td>
       </tr>
       <tr>
-        <td>Number of sequences of powers of 5</td>
-        <td><%=@seg_arr.length%></td>
-      </tr>
-            <%else%>
-                <p>There are no sequences of powers of 5</p>
-            <%end%>
+      <%end%>
     </table>
       <div><%=link_to "return to home page", "/"%></div>
 
