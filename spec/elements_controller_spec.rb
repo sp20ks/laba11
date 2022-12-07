@@ -3,13 +3,26 @@
 require 'spec_helper'
 require 'rails_helper'
 
-# testing ElementsHelper
-RSpec.describe ElementsHelper do
-  include ElementsHelper
-  it 'returns true if value is a power of 5' do
-    expect(power_of_5?(0)).to eq(false)
-    expect(power_of_5?(1)).to eq(true)
-    expect(power_of_5?(5)).to eq(true)
+# testing model
+RSpec.describe Element do
+  it 'should save sequnce' do
+    a = Element.new(arr: '1 2 3 4 5 5 5 5 0 9 625 625 5 5 625 625', length: 16)
+    expect(a.save).to eq(true)
+    Element.last.destroy
+  end
+
+  it 'should add sequnce in db' do
+    num_of_elements = Element.all.length
+    a = Element.create(arr: '1 2 3 4 5 5 5 5 0 9 625 625 5 5 625 625', length: 16)
+    expect(Element.all.length).to eq(num_of_elements + 1)
+    expect(Element.last).to eq(a)
+    Element.last.destroy
+  end
+
+  it 'should initialize max_subarr before save' do
+    a = Element.create(arr: '1 2 3 4 5 5 5 5 0 9 625 625 5 5 625 625', length: 16)
+    expect(a.max_subarr).to eq('[625, 625, 5, 5, 625, 625]')
+    Element.last.destroy
   end
 end
 
@@ -49,43 +62,6 @@ RSpec.describe ElementsController, type: :controller do
         expect(response.status).to eq(200)
       end
     end
-  end
-
-  describe 'Test model' do
-    it 'should save new element' do
-      element = Element.new do |elem|
-        elem.arr = '6 7 8 9 4 5 6 7 8'
-        elem.length = 9
-        elem.res_arr = '[[5]]'
-        elem.max_subarr = '[5]'
-      end
-      expect(element.save).to eq(true)
-    end
-  end
-
-  it 'should increase the number of records by one' do
-    count = Element.all.length
-    element = Element.new do |elem|
-      elem.arr = '3'
-      elem.length = 1
-      elem.res_arr = '[]'
-      elem.max_subarr = '[]'
-    end
-    element.save
-    expect(Element.all.length).to eq(count + 1)
-  end
-end
-
-# testing requests
-RSpec.describe ElementsController, type: 'request' do
-  it 'expects to see sequences of powers of 5' do
-    get '/elements/result?length=7&str_elem=1+2+3+4+5+6+7'
-    expect(assigns[:length]).to eq(7)
-  end
-
-  it 'expects to get nil in result of searching by sequence' do
-    get '/elements/res_of_search?str_seq=0+0+0+0+0+0+0+0+0+0+0+0&commit=search'
-    expect(assigns[:res]).to eq(nil)
   end
 end
 
@@ -163,7 +139,7 @@ RSpec.describe 'Selenium test of page' do
     link.click
 
     driver.manage.timeouts.implicit_wait = 500
-    expect(driver.find_element(id: 'result').text).to eq('We have found this: 1, 1, [[1]], [1]')
+    expect(driver.find_element(id: 'result').text).to eq('We have found this: 1, 1, 1, [1]')
     driver.quit
   end
 
